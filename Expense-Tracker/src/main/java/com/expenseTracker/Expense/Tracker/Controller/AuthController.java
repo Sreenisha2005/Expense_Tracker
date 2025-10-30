@@ -5,6 +5,7 @@ import com.expenseTracker.Expense.Tracker.DTO.AuthResponse;
 import com.expenseTracker.Expense.Tracker.Entity.Users;
 import com.expenseTracker.Expense.Tracker.Security.JwtUtil;
 import com.expenseTracker.Expense.Tracker.Service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,16 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authManager;
-
-    public AuthController(UserService userService, JwtUtil jwtUtil, AuthenticationManager authManager) {
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-        this.authManager = authManager;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest req) {

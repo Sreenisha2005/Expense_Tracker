@@ -21,6 +21,7 @@ body {
   background: white;
   padding: 2em;
   border-radius: 8px;
+  margin: 10px;
 }
 button {
   background: #0984e3;
@@ -29,5 +30,6 @@ button {
   padding: 0.5em 1em;
   border-radius: 5px;
   cursor: pointer;
+  margin: 10px;
 }
 button:hover { background: #74b9ff; }
