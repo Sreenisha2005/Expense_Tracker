@@ -1,8 +1,11 @@
 package com.expenseTracker.Expense.Tracker.Service;
 
+import com.expenseTracker.Expense.Tracker.DTO.AuthRequest;
 import com.expenseTracker.Expense.Tracker.Entity.Users;
 import com.expenseTracker.Expense.Tracker.Repository.UserRepository;
+import com.expenseTracker.Expense.Tracker.Security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +21,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+
 
     public Users registerUser(String username, String password) {
         Users u = Users.builder()
@@ -48,4 +52,5 @@ public class UserService implements UserDetailsService {
     public Users findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
+
 }

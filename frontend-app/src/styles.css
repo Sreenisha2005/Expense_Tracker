@@ -19,7 +19,7 @@ body {
   max-width: 600px;
   margin: 2em auto;
   background: white;
-  padding: 2em;
+  padding: 6em;
   border-radius: 8px;
   margin: 10px;
 }
@@ -27,7 +27,7 @@ button {
   background: #0984e3;
   color: white;
   border: none;
-  padding: 0.5em 1em;
+  padding: 6px 20px;
   border-radius: 5px;
   cursor: pointer;
   margin: 10px;

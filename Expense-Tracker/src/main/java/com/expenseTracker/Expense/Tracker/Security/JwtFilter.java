@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,12 +32,18 @@ public class JwtFilter extends OncePerRequestFilter {
                 String username = jwtUtil.extractUsername(token);
                 String role = jwtUtil.extractRole(token);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                            username,
-                            null,
-                            List.of(new SimpleGrantedAuthority(role))
-                    );
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    if (jwtUtil.validateToken(token, username)){
+                        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                List.of(new SimpleGrantedAuthority(role))
+                        );
+                        //Principal → username
+                        //Credentials → null (since password not needed now)
+                        //Authorities → [ROLE_USER] or [ROLE_ADMIN]
+                        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
                 }
             } catch (JwtException e) {
                 // invalid token - ignore and proceed with no auth

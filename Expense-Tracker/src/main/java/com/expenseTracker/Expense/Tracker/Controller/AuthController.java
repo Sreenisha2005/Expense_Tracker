@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
@@ -35,9 +34,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest req) {
-        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
-        String role = auth.getAuthorities().stream().findFirst().get().getAuthority();
-        String token = jwtUtil.generateToken(req.getUsername(), role);
-        return ResponseEntity.ok(new AuthResponse(token));
+        Authentication auth = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
+        if (auth.isAuthenticated()){
+            String role = auth.getAuthorities().stream().findFirst().get().getAuthority();
+            String token = jwtUtil.generateToken(req.getUsername(), role);
+            return ResponseEntity.ok(new AuthResponse(token));
+        }
+        return ResponseEntity.badRequest().body("Not found! Try again");
     }
 }
